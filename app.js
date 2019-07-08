@@ -1,7 +1,4 @@
 const http = require('http'); //Libreria para poder levantar un servidor HTTP
-const routes = require('./routes') //Se importa el archivo de routes.js
-
-console.log(routes.someText);
 
 //Request que se ejecutara cada vez que se ingrese al sitio web y ejecutara el metodo exportado del archivo routes.js
 const server = http.createServer(routes.handler);
