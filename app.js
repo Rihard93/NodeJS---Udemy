@@ -1,23 +1,27 @@
+//Librerias
+const path = require('path'); //Libreria para poder obtener la ruta absoluta del proyecto
 const express = require('express'); //Libreria para poder hacer uso del framework express.js
-
+const bodyParser = require('body-parser'); //Libreria para poder hacer un parse de la informacion ingresada en los formularios
 const app = express(); // Aplicacion de express.js
 
-//Metodo que se ejecutará para cada request que se haga al sitio web.
-app.use('/', (req, res, next) => {
-    console.log('This always runs!');
-    next();
-});
+//Rutas
+const adminRoutes = require('./routes/admin'); //Ubicacion en donde se encuentran las rutas y la logica para la seccion de administrador
+const shopRoutes = require('./routes/shop'); //Ubicacion en donde se encuentran las rutas y la logica para la seccion de ventas
 
-//Metodo que se ejecutará para cada request que se haga a add-product
-app.use('/add-product', (req, res, next) => {
-  console.log('In another middleware!');
-  res.send('<h1>The "Add Product" Page</h1>');
-});
+//Middleware que se encargara de almancenar toda la informacion que se ingrese al sitio.
+app.use(bodyParser.urlencoded({extended: false}));
 
-//Metodo que se ejecutará para cada request que se haga al sitio web.
-app.use('/',(req, res, next) =>{
-    console.log('In another middleware!');
-    res.send('<h1>Hello from Express!</h1>');
+//Middleware estatico que se encarga de permitir el accesso a la carpeta public desde el sitio web
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/admin',adminRoutes); //Se hace uso de las rutas almacenadas en el archivo admin.js
+app.use(shopRoutes); //Se hace uso de las rutas almacenadas en el archivo shop.js
+
+//404 error page
+app.use((req, res, next) =>{
+
+    //Se envia la vista html de la pagina al usuario.
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 //Se establece el puerto en donde se iniciara el sitio web.
