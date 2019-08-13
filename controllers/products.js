@@ -1,4 +1,4 @@
-const products = []; //Arreglo en donde se almancenaran todos los productos ingresados
+const Product = require("../models/product"); //Se manda a llamar el model product.js, el cual contiene la clase product.
 
 exports.getAddProduct = (req, res, next) => {
   //Se envia la vista html (.ejs) de la pagina al usuario.
@@ -9,15 +9,18 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save();
   res.redirect("/");
 };
 
-exports.getProducts =  (req, res, next) => {
-    //Se envia la vista html (.ejs) de la pagina al usuario    
+exports.getProducts = (req, res, next) => {
+  //Se envia la vista html (.ejs) de la pagina al usuario
+  Product.fetchAll(products => {
     res.render("shop", {
       prods: products,
       pageTitle: "Shop",
-      path: "/",
+      path: "/"
     });
-  }
+  });
+};
