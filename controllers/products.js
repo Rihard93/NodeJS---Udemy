@@ -2,7 +2,7 @@ const Product = require("../models/product"); //Se manda a llamar el model produ
 
 exports.getAddProduct = (req, res, next) => {
   //Se envia la vista html (.ejs) de la pagina al usuario.
-  res.render("add-product", {
+  res.render("admin/add-product", {
     pageTitle: "Add product",
     path: "/admin/add-product"
   });
@@ -17,7 +17,7 @@ exports.postAddProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   //Se envia la vista html (.ejs) de la pagina al usuario
   Product.fetchAll(products => {
-    res.render("shop", {
+    res.render("shop/product-list", {
       prods: products,
       pageTitle: "Shop",
       path: "/"
